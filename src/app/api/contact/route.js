@@ -6,6 +6,7 @@ export async function POST(request) {
   try {
     const body = await request.json();
 
+    // run the same validation as the frontend just to be safe
     const errors = validateContactForm(body);
     if (Object.keys(errors).length > 0) {
       return NextResponse.json({ errors }, { status: 400 });
@@ -14,7 +15,7 @@ export async function POST(request) {
     const contact = await prisma.contact.create({
       data: {
         name: body.name.trim(),
-        email: body.email.trim().toLowerCase(),
+        email: body.email.trim().toLowerCase(), // normalize email
         message: body.message.trim(),
       },
     });

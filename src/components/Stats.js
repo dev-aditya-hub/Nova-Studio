@@ -10,6 +10,7 @@ function StatItem({ stat }) {
     const end = stat.value;
     if (start === end) return;
 
+    // figure out how fast to increment so the animation takes ~1.5 seconds
     const stepTime = Math.max(Math.floor(1500 / end), 10);
 
     const timer = setInterval(() => {

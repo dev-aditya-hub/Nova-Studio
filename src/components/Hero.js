@@ -2,11 +2,13 @@
 
 export default function Hero() {
   const handleCtaClick = async () => {
+    // scroll smoothly to the contact form section when button is clicked
     const contactSection = document.getElementById("contact");
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: "smooth" });
     }
 
+    // also log this click in our analytics
     try {
       fetch("/api/analytics", {
         method: "POST",
@@ -18,7 +20,7 @@ export default function Hero() {
         }),
       });
     } catch (err) {
-      // fail silently
+      // fail silently so it doesn't break the user experience
     }
   };
 

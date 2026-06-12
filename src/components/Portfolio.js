@@ -4,6 +4,7 @@ function ProjectCard({ project }) {
   return (
     <div className="project-card">
       <div className="project-image-container">
+        {/* Next.js image component helps load images faster than regular img tags */}
         <Image
           src={project.imageUrl}
           alt={project.title}
@@ -35,6 +36,7 @@ export default function Portfolio({ projects }) {
       </div>
 
       <div className="portfolio-grid">
+        {/* loop through the projects passed from the db */}
         {projects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}

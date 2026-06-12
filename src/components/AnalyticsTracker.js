@@ -7,6 +7,7 @@ export default function AnalyticsTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
+    // track whenever a user visits a page
     const trackPageVisit = async () => {
       try {
         await fetch("/api/analytics", {
@@ -18,7 +19,7 @@ export default function AnalyticsTracker() {
           }),
         });
       } catch (err) {
-        // fail silently
+        // fail silently — analytics shouldn't crash the site if mongodb is down
       }
     };
 

@@ -6,7 +6,7 @@ import { validateProject } from "@/lib/validators";
 export async function GET() {
   try {
     const projects = await prisma.project.findMany({
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: "desc" }, // newest first
     });
     return NextResponse.json(projects);
   } catch (error) {
@@ -19,6 +19,7 @@ export async function GET() {
 }
 
 export async function POST(request) {
+  // only admins can add projects
   const admin = await verifyAdmin();
   if (!admin) {
     return NextResponse.json(
@@ -29,6 +30,8 @@ export async function POST(request) {
 
   try {
     const body = await request.json();
+
+    // validate on server side too, not just frontend
     const errors = validateProject(body);
     if (Object.keys(errors).length > 0) {
       return NextResponse.json({ errors }, { status: 400 });

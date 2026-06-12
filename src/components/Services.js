@@ -1,5 +1,6 @@
 "use client";
 
+// simple map to associate service names with an emoji icon
 const iconMap = {
   DesignServices: "🎨",
   Code: "💻",
@@ -7,6 +8,7 @@ const iconMap = {
 };
 
 function ServiceCard({ service }) {
+  // default to star if icon isn't found
   const icon = iconMap[service.icon] || "⭐";
 
   return (
@@ -32,6 +34,7 @@ export default function Services({ services }) {
       </div>
 
       <div className="services-grid">
+        {/* render a card for each service fetched from db */}
         {services.map((service) => (
           <ServiceCard key={service.id} service={service} />
         ))}

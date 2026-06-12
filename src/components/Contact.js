@@ -17,6 +17,7 @@ export default function Contact() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // clear the error for that field as the user types
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -25,6 +26,7 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // validate before sending to server
     const validationErrors = validateContactForm(formData);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);

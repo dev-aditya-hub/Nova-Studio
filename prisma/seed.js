@@ -4,12 +4,14 @@ const bcrypt = require("bcryptjs");
 const prisma = new PrismaClient();
 
 async function main() {
+  // wipe everything first so re-running seed doesn't duplicate data
   await prisma.project.deleteMany();
   await prisma.contact.deleteMany();
   await prisma.service.deleteMany();
   await prisma.stat.deleteMany();
   await prisma.admin.deleteMany();
 
+  // the three core services the agency offers
   const services = [
     {
       title: "Web Design",
@@ -35,6 +37,7 @@ async function main() {
     await prisma.service.create({ data: service });
   }
 
+  // key numbers shown in the stats section with count-up animation
   const stats = [
     { label: "Projects Completed", value: 150, suffix: "+" },
     { label: "Clients Worldwide", value: 50, suffix: "+" },
@@ -45,6 +48,7 @@ async function main() {
     await prisma.stat.create({ data: stat });
   }
 
+  // sample portfolio projects — images stored in /public/images/
   const projects = [
     {
       title: "Apex Fitness",
@@ -76,6 +80,7 @@ async function main() {
     await prisma.project.create({ data: project });
   }
 
+  // hash the password before storing — never store plain text
   const hashedPassword = await bcrypt.hash(
     process.env.ADMIN_PASSWORD || "NovaStudio@2024",
     12
