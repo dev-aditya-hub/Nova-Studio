@@ -44,7 +44,6 @@ export function validateProject(data) {
     errors.category = "Category is required";
   }
 
-  // imageUrl can be a path like /images/project-1.jpg or a full url
   if (!data.imageUrl || data.imageUrl.trim().length === 0) {
     errors.imageUrl = "Image URL is required";
   }

@@ -3,7 +3,6 @@ import prisma from "@/lib/prisma";
 import { verifyAdmin } from "@/lib/auth";
 
 export async function GET() {
-  // admin only endpoint
   const admin = await verifyAdmin();
   if (!admin) {
     return NextResponse.json(
@@ -14,7 +13,7 @@ export async function GET() {
 
   try {
     const contacts = await prisma.contact.findMany({
-      orderBy: { createdAt: "desc" }, // show newest submissions first
+      orderBy: { createdAt: "desc" },
     });
 
     return NextResponse.json(contacts);

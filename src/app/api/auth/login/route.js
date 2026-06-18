@@ -18,8 +18,6 @@ export async function POST(request) {
       where: { username: username.trim() },
     });
 
-    // return same error for wrong username and wrong password
-    // so attackers can't tell which one was wrong
     if (!admin) {
       return NextResponse.json(
         { error: "Invalid credentials" },
@@ -36,7 +34,6 @@ export async function POST(request) {
       );
     }
 
-    // create a JWT and set it as an httpOnly cookie
     const token = createToken(admin);
     await setAuthCookie(token);
 

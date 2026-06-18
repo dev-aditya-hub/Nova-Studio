@@ -13,7 +13,6 @@ export default function DashboardClient({
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("inquiries");
   
-  // store all data in state so we can update it without refreshing the page
   const [contacts] = useState(initialContacts);
   const [projects, setProjects] = useState(initialProjects);
   const [analytics] = useState(initialAnalytics);
@@ -30,7 +29,6 @@ export default function DashboardClient({
 
   const showFeedback = (message, type = "success") => {
     setFeedback({ message, type });
-    // hide feedback message after 4 seconds
     setTimeout(() => setFeedback({ message: "", type: "success" }), 4000);
   };
 
@@ -39,7 +37,7 @@ export default function DashboardClient({
       const res = await fetch("/api/auth/logout", { method: "POST" });
       if (res.ok) {
         router.push("/admin/login");
-        router.refresh(); // force next.js to reload so admin layout goes away
+        router.refresh();
       }
     } catch (err) {
       showFeedback("Logout failed", "error");
@@ -49,7 +47,6 @@ export default function DashboardClient({
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setNewProject((prev) => ({ ...prev, [name]: value }));
-    // clear error while typing
     if (formErrors[name]) {
       setFormErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -76,10 +73,8 @@ export default function DashboardClient({
       const data = await res.json();
 
       if (res.ok) {
-        // add the new project to the top of the list
         setProjects((prev) => [data, ...prev]);
         
-        // reset form
         setNewProject({
           title: "",
           category: "Web Design",
@@ -98,7 +93,6 @@ export default function DashboardClient({
   };
 
   const handleDeleteProject = async (projectId) => {
-    // confirm before deleting to prevent accidents
     if (!window.confirm("Are you sure you want to delete this project?")) {
       return;
     }
@@ -109,7 +103,6 @@ export default function DashboardClient({
       });
 
       if (res.ok) {
-        // remove the project from state
         setProjects((prev) => prev.filter((p) => p.id !== projectId));
         showFeedback("Project deleted successfully!");
       } else {
@@ -164,7 +157,6 @@ export default function DashboardClient({
       )}
 
       <main className="dashboard-content">
-        {/* inquiries tab content */}
         {activeTab === "inquiries" && (
           <div className="tab-pane">
             <h2>Client Project Inquiries</h2>
@@ -204,7 +196,6 @@ export default function DashboardClient({
           </div>
         )}
 
-        {/* projects tab content */}
         {activeTab === "projects" && (
           <div className="tab-pane">
             <div className="projects-manager-layout">
@@ -310,7 +301,6 @@ export default function DashboardClient({
           </div>
         )}
 
-        {/* analytics tab content */}
         {activeTab === "analytics" && (
           <div className="tab-pane">
             <h2>Site Visit & Click Stream Analytics</h2>

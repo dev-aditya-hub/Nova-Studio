@@ -6,7 +6,6 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const COOKIE_NAME = "nova_admin_token";
 
 export async function hashPassword(password) {
-  // 12 salt rounds is a good balance between security and performance
   return bcrypt.hash(password, 12);
 }
 
@@ -34,7 +33,6 @@ export async function verifyAdmin() {
     const decoded = jwt.verify(token.value, JWT_SECRET);
     return decoded;
   } catch (err) {
-    // token expired or tampered
     return null;
   }
 }
@@ -42,17 +40,16 @@ export async function verifyAdmin() {
 export async function setAuthCookie(token) {
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, token, {
-    httpOnly: true, // js can't access this
+    httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: 60 * 60 * 24, // 24 hours
+    maxAge: 60 * 60 * 24,
     path: "/",
   });
 }
 
 export async function clearAuthCookie() {
   const cookieStore = await cookies();
-  // setting maxAge to 0 immediately expires the cookie
   cookieStore.set(COOKIE_NAME, "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

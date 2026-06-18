@@ -6,7 +6,14 @@ export async function POST(request) {
   try {
     const body = await request.json();
 
-    // run the same validation as the frontend just to be safe
+    if (body.website && body.website.trim().length > 0) {
+      console.warn("Spam attempt detected and blocked (honeypot triggered).");
+      return NextResponse.json(
+        { message: "Thank you! We'll get back to you soon." },
+        { status: 201 }
+      );
+    }
+
     const errors = validateContactForm(body);
     if (Object.keys(errors).length > 0) {
       return NextResponse.json({ errors }, { status: 400 });
@@ -15,7 +22,7 @@ export async function POST(request) {
     const contact = await prisma.contact.create({
       data: {
         name: body.name.trim(),
-        email: body.email.trim().toLowerCase(), // normalize email
+        email: body.email.trim().toLowerCase(),
         message: body.message.trim(),
       },
     });

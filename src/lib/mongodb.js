@@ -6,7 +6,6 @@ if (!MONGODB_URI) {
   throw new Error("MONGODB_URI is not defined in environment variables");
 }
 
-// cache the connection so we don't reconnect on every request in dev
 let cached = global.mongoose;
 
 if (!cached) {

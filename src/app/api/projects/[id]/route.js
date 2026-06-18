@@ -15,7 +15,6 @@ export async function DELETE(request, { params }) {
     const { id } = await params;
     const projectId = parseInt(id, 10);
 
-    // make sure the id is actually a number
     if (isNaN(projectId)) {
       return NextResponse.json(
         { error: "Invalid project ID" },
@@ -23,7 +22,6 @@ export async function DELETE(request, { params }) {
       );
     }
 
-    // check if project exists before trying to delete
     const existing = await prisma.project.findUnique({
       where: { id: projectId },
     });

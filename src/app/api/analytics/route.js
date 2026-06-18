@@ -17,7 +17,6 @@ export async function POST(request) {
       );
     }
 
-    // only track known event types
     const allowedTypes = ["page_visit", "cta_click"];
     if (!allowedTypes.includes(eventType)) {
       return NextResponse.json(
@@ -39,7 +38,6 @@ export async function POST(request) {
     return NextResponse.json({ message: "Event tracked", id: event._id }, { status: 201 });
   } catch (error) {
     console.error("Analytics tracking error:", error);
-    // don't let analytics errors break the main app
     return NextResponse.json(
       { error: "Failed to track event" },
       { status: 500 }
@@ -59,7 +57,6 @@ export async function GET() {
   try {
     await connectMongo();
 
-    // latest 200 events, most recent first
     const events = await Analytics.find()
       .sort({ timestamp: -1 })
       .limit(200)
